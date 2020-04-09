@@ -25,10 +25,27 @@ namespace Fisher
         /// </summary>
         private readonly Timer _pixelCheck;
 
+        private object locker = new object();
+
+        private void SetRunning(bool flag)
+        {
+            lock (locker)
+            {
+                __running = flag;
+            }
+        }
+
+        private bool GetRunning()
+        {
+            lock (locker)
+                return __running;
+        }
+
+
         /// <summary>
         ///     Flag to determine if it is processing an image
         /// </summary>
-        private bool _running;
+        private bool __running;
 
         public Form1()
         {
@@ -38,7 +55,7 @@ namespace Fisher
             //Hook to keypress
             _globalKeyboardHook.KeyboardPressed += _globalKeyboardHook_KeyboardPressed;
             //Setup timer for checking screen
-            _pixelCheck = new Timer {Interval = (int) TimeSpan.FromMilliseconds(100).TotalMilliseconds};
+            _pixelCheck = new Timer { Interval = (int)TimeSpan.FromMilliseconds(100).TotalMilliseconds };
             //Setup timer on tick event
             _pixelCheck.Tick += PixelCheckTick;
         }
@@ -54,28 +71,56 @@ namespace Fisher
             {
                 //Ctrl F2
                 case 113:
-                {
-                    if (e.KeyboardState == GlobalKeyboardHook.KeyboardState.KeyDown)
                     {
-                        _pixelCheck.Start();
-                        lblStatus.Text = @"Status: Running";
-                    }
+                        if (e.KeyboardState == GlobalKeyboardHook.KeyboardState.KeyDown)
+                        {
+                            _pixelCheck.Start();
+                            lblStatus.Text = @"Status: Running";
+                        }
 
-                    break;
-                }
+                        break;
+                    }
                 //Ctrl F3
                 case 114:
-                {
-                    if (e.KeyboardState == GlobalKeyboardHook.KeyboardState.KeyDown)
                     {
-                        _pixelCheck.Stop();
-                        lblStatus.Text = @"Status: Stopped";
-                    }
+                        if (e.KeyboardState == GlobalKeyboardHook.KeyboardState.KeyDown)
+                        {
+                            _pixelCheck.Stop();
+                            lblStatus.Text = @"Status: Stopped";
+                        }
 
-                    break;
-                }
+                        break;
+                    }
             }
         }
+
+        private Bitmap GetBitMap(Rectangle captureRectangle, int height, int width)
+        {
+            Bitmap captureBitmap = new Bitmap(240, 240, PixelFormat.Format32bppArgb);
+            Graphics captureGraphics=null;
+            try
+            {
+                //Get a graphics adapter
+                captureGraphics = Graphics.FromImage(captureBitmap);
+
+                //Capture image from screen
+                captureGraphics.CopyFromScreen(captureRectangle.Left, captureRectangle.Top, 0, 0, captureRectangle.Size);
+
+                return captureBitmap;
+            }
+            catch (Exception e)
+            {
+
+            }
+            finally
+            {
+                captureGraphics?.Dispose();
+            }
+
+            return null;
+        }
+
+
 
         /// <summary>
         ///     Retrieves a bitmap for the portion of the screen which is in the captureRectangle.
@@ -87,32 +132,27 @@ namespace Fisher
         private void CheckImage(Rectangle captureRectangle, int height, int width)
         {
             bool foundBobber = false;
-            _running = true;
-            //Create new bitmap to hold image
-            Bitmap captureBitmap = new Bitmap(240, 240, PixelFormat.Format32bppArgb);
-
-            //Get a graphics adapter
-            Graphics captureGraphics = Graphics.FromImage(captureBitmap);
-
-            //Capture image from screen
-            captureGraphics.CopyFromScreen(captureRectangle.Left, captureRectangle.Top, 0, 0, captureRectangle.Size);
+            SetRunning(true);
+            Bitmap captureBitmap = GetBitMap(captureRectangle, height, width);
+            if (captureBitmap == null)
+                return;
 
             //For each pixel in the image
             for (int j = 0; j < height; j++)
-            for (int i = 0; i < width; i++)
-            {
-                //Get the pixel
-                Color color = captureBitmap.GetPixel(j, i);
-                //Is it red like the bobber?
-                if (color.R > 120 && color.B < 30 && color.G < 30)
+                for (int i = 0; i < width; i++)
                 {
-                    foundBobber = true;
-                    break;
-                }
+                    //Get the pixel
+                    Color color = captureBitmap.GetPixel(j, i);
+                    //Is it red like the bobber?
+                    if (color.R > 120 && color.B < 30 && color.G < 30)
+                    {
+                        foundBobber = true;
+                        break;
+                    }
 
-                if (foundBobber)
-                    break;
-            }
+                    if (foundBobber)
+                        break;
+                }
 
             //Grab the old preview image.
             Image old = pbPreview.Image;
@@ -121,9 +161,7 @@ namespace Fisher
             //Dispose of the old preview image
             old?.Dispose();
             //Create a new preview image from the screen grab
-            pbPreview.Image = (Bitmap) captureBitmap.Clone();
-            //Dispose the graphics adapter
-            captureGraphics.Dispose();
+            pbPreview.Image = (Bitmap)captureBitmap.Clone();
 
             if (foundBobber)
             {
@@ -132,10 +170,9 @@ namespace Fisher
             else
             {
                 LogConsole("Bobber Missing!");
-                MouseEvent(MouseEventFlags.RightDown);
-                Thread.Sleep(100);
-                MouseEvent(MouseEventFlags.RightUp);
-                Thread.Sleep(5000);
+                RighClickWindow();
+
+
             }
 
             //Dispose the capture bitmap.
@@ -144,7 +181,25 @@ namespace Fisher
             GC.Collect(int.MaxValue, GCCollectionMode.Forced);
 
             //Clear the running flag.
-            _running = false;
+            SetRunning(false);
+        }
+
+
+
+        public void RighClickWindow()
+        {
+            try
+            {
+                MouseEvent(MouseEventFlags.RightDown);
+                Thread.Sleep(100);
+                MouseEvent(MouseEventFlags.RightUp);
+                Thread.Sleep(5000);
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
 
         public new void Dispose()
@@ -171,8 +226,8 @@ namespace Fisher
             IntPtr desktop = GetDC(IntPtr.Zero);
             using (Graphics g = Graphics.FromHdc(desktop))
             {
-                Pen pen = new Pen(Brushes.Chartreuse);
-                g.DrawRectangle(pen, x, y, width, height);
+                using (Pen pen = new Pen(Brushes.Chartreuse))
+                    g.DrawRectangle(pen, x, y, width, height);
             }
 
             ReleaseDC(IntPtr.Zero, desktop);
@@ -216,7 +271,7 @@ namespace Fisher
         {
             MousePoint position = GetCursorPosition();
 
-            mouse_event((int) value, position.X, position.Y, 0, 0);
+            mouse_event((int)value, position.X, position.Y, 0, 0);
         }
 
         /// <summary>
@@ -247,7 +302,7 @@ namespace Fisher
 
             DrawRectangle(captureRectangle.X, captureRectangle.Y, captureRectangle.Width, captureRectangle.Height);
 
-            if (!_running)
+            if (!GetRunning())
                 new Thread(() => { CheckImage(captureRectangle, height, width); }).Start();
         }
 
@@ -331,9 +386,6 @@ namespace Fisher
 
         #endregion
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
 
-        }
     }
 }
