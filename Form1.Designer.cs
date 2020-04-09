@@ -1,4 +1,4 @@
-﻿namespace Fisher
+﻿namespace McFishing
 {
     partial class Form1
     {
@@ -129,7 +129,7 @@
             this.Controls.Add(this.pbPreview);
             this.Controls.Add(this.txtConsole);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "McFishing";
             ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

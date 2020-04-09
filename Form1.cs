@@ -4,14 +4,14 @@ using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
-using McFisher;
+using McFishing;
 using Timer = System.Windows.Forms.Timer;
 
 // ReSharper disable IdentifierTypo
 // ReSharper disable CommentTypo
 // ReSharper disable StringLiteralTypo
 
-namespace Fisher
+namespace McFishing
 {
     public partial class Form1 : Form
     {
@@ -131,14 +131,20 @@ namespace Fisher
         /// <param name="width"></param>
         private void CheckImage(Rectangle captureRectangle, int height, int width)
         {
-            bool foundBobber = false;
-            SetRunning(true);
-            Bitmap captureBitmap = GetBitMap(captureRectangle, height, width);
-            if (captureBitmap == null)
-                return;
+            Bitmap captureBitmap = null;
+            try
+            {
+                bool foundBobber = false;
+                SetRunning(true);
+                captureBitmap = GetBitMap(captureRectangle, height, width);
+                if (captureBitmap == null)
+                {
+                    SetRunning(false);
+                    return;
+                }
 
-            //For each pixel in the image
-            for (int j = 0; j < height; j++)
+                //For each pixel in the image
+                for (int j = 0; j < height; j++)
                 for (int i = 0; i < width; i++)
                 {
                     //Get the pixel
@@ -154,34 +160,42 @@ namespace Fisher
                         break;
                 }
 
-            //Grab the old preview image.
-            Image old = pbPreview.Image;
-            //Clear the preview image
-            pbPreview.Image = null;
-            //Dispose of the old preview image
-            old?.Dispose();
-            //Create a new preview image from the screen grab
-            pbPreview.Image = (Bitmap)captureBitmap.Clone();
+                //Grab the old preview image.
+                Image old = pbPreview.Image;
+                //Clear the preview image
+                pbPreview.Image = null;
+                //Dispose of the old preview image
+                old?.Dispose();
+                //Create a new preview image from the screen grab
+                pbPreview.Image = (Bitmap) captureBitmap.Clone();
 
-            if (foundBobber)
-            {
-                LogConsole("Found Bobber!");
+                if (foundBobber)
+                {
+                    LogConsole("Found Bobber!");
+                }
+                else
+                {
+                    LogConsole("Bobber Missing!");
+                    RighClickWindow();
+                    Thread.Sleep(200);
+                    RighClickWindow();
+                }
+
+                //Force Garbage Collection
+                GC.Collect(int.MaxValue, GCCollectionMode.Forced);
+
+                //Clear the running flag.
+                SetRunning(false);
             }
-            else
+            catch (Exception e)
             {
-                LogConsole("Bobber Missing!");
-                RighClickWindow();
-
-
+                LogConsole(e.Message);
             }
-
-            //Dispose the capture bitmap.
-            captureBitmap.Dispose();
-            //Force Garbage Collection
-            GC.Collect(int.MaxValue, GCCollectionMode.Forced);
-
-            //Clear the running flag.
-            SetRunning(false);
+            finally
+            {
+                //Dispose the capture bitmap.
+                captureBitmap?.Dispose();
+            }
         }
 
 

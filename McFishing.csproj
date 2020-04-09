@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{AAF72E59-C5FA-41AA-9843-7D1DE7E0760C}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>McFisher</RootNamespace>
-    <AssemblyName>McFisher</AssemblyName>
+    <RootNamespace>McFishing</RootNamespace>
+    <AssemblyName>McFishing</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
