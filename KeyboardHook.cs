@@ -7,6 +7,7 @@ namespace McFisher
 {
     internal class GlobalKeyboardHookEventArgs : HandledEventArgs
     {
+
         public GlobalKeyboardHookEventArgs(GlobalKeyboardHook.LowLevelKeyboardInputEvent keyboardData, GlobalKeyboardHook.KeyboardState keyboardState)
         {
             KeyboardData = keyboardData;
