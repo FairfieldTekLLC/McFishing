@@ -93,10 +93,44 @@ namespace Fisher
                     }
             }
         }
+    
 
-        private Bitmap GetBitMap(Rectangle captureRectangle, int height, int width)
+
+        public Bitmap CaptureRegion(Rectangle region)
         {
-            Bitmap captureBitmap = new Bitmap(240, 240, PixelFormat.Format32bppArgb);
+            Bitmap result;
+
+            IntPtr desktophWnd = GetDesktopWindow();
+            IntPtr desktopDc = GetWindowDC(desktophWnd);
+            IntPtr memoryDc = CreateCompatibleDC(desktopDc);
+            IntPtr bitmap = CreateCompatibleBitmap(desktopDc, region.Width, region.Height);
+            IntPtr oldBitmap = SelectObject(memoryDc, bitmap);
+            bool success = BitBlt(memoryDc, 0, 0, region.Width, region.Height, desktopDc, region.Left, region.Top, SRCCOPY | CAPTUREBLT);
+            try
+            {
+                if (!success)
+                {
+                    throw new Exception("Failed to capture image!");
+                }
+
+                result = Image.FromHbitmap(bitmap);
+            }
+            finally
+            {
+                SelectObject(memoryDc, oldBitmap);
+                DeleteObject(bitmap);
+                DeleteDC(memoryDc);
+                ReleaseDC(desktophWnd, desktopDc);
+            }
+
+            return result;
+        }
+
+
+        //Memory Leak!
+        private Bitmap GetBitMap(Rectangle captureRectangle)
+        {
+            Bitmap captureBitmap = new Bitmap(captureRectangle.Width, captureRectangle.Height, PixelFormat.Format32bppArgb);
             Graphics captureGraphics=null;
             try
             {
@@ -129,17 +163,21 @@ namespace Fisher
         /// <param name="captureRectangle"></param>
         /// <param name="height"></param>
         /// <param name="width"></param>
-        private void CheckImage(Rectangle captureRectangle, int height, int width)
+        private void CheckImage(Rectangle captureRectangle)
         {
             bool foundBobber = false;
             SetRunning(true);
-            Bitmap captureBitmap = GetBitMap(captureRectangle, height, width);
-            if (captureBitmap == null)
-                return;
+            using (Bitmap captureBitmap = CaptureRegion(captureRectangle))
+            {
+                if (captureBitmap == null)
+                {
+                    SetRunning(false);
+                    return;
+                }
 
-            //For each pixel in the image
-            for (int j = 0; j < height; j++)
-                for (int i = 0; i < width; i++)
+                //For each pixel in the image
+                for (int j = 0; j < captureRectangle.Height; j++)
+                for (int i = 0; i < captureRectangle.Width; i++)
                 {
                     //Get the pixel
                     Color color = captureBitmap.GetPixel(j, i);
@@ -154,34 +192,31 @@ namespace Fisher
                         break;
                 }
 
-            //Grab the old preview image.
-            Image old = pbPreview.Image;
-            //Clear the preview image
-            pbPreview.Image = null;
-            //Dispose of the old preview image
-            old?.Dispose();
-            //Create a new preview image from the screen grab
-            pbPreview.Image = (Bitmap)captureBitmap.Clone();
+                //Grab the old preview image.
+                Image old = pbPreview.Image;
+                //Clear the preview image
+                pbPreview.Image = null;
+                //Dispose of the old preview image
+                old?.Dispose();
+                //Create a new preview image from the screen grab
+                pbPreview.Image = (Bitmap) captureBitmap.Clone();
 
-            if (foundBobber)
-            {
-                LogConsole("Found Bobber!");
+                if (foundBobber)
+                {
+                    LogConsole("Found Bobber!");
+                }
+                else
+                {
+                    LogConsole("Bobber Missing!");
+                    RighClickWindow();
+                }
+
+                //Clear the running flag.
+                SetRunning(false);
             }
-            else
-            {
-                LogConsole("Bobber Missing!");
-                RighClickWindow();
-
-
-            }
-
-            //Dispose the capture bitmap.
-            captureBitmap.Dispose();
             //Force Garbage Collection
             GC.Collect(int.MaxValue, GCCollectionMode.Forced);
 
-            //Clear the running flag.
-            SetRunning(false);
         }
 
 
@@ -303,7 +338,7 @@ namespace Fisher
             DrawRectangle(captureRectangle.X, captureRectangle.Y, captureRectangle.Width, captureRectangle.Height);
 
             if (!GetRunning())
-                new Thread(() => { CheckImage(captureRectangle, height, width); }).Start();
+                new Thread(() => { CheckImage(captureRectangle); }).Start();
         }
 
         #region DllImports
@@ -383,7 +418,36 @@ namespace Fisher
         }
 
 #pragma warning restore 649
+        const int SRCCOPY = 0xcc0020; // we want to copy an in memory image
 
+        [DllImport("gdi32.dll")]
+        static extern bool BitBlt(IntPtr hdcDest, int nxDest, int nyDest, int nWidth, int nHeight, IntPtr hdcSrc, int nXSrc, int nYSrc, int dwRop);
+
+        [DllImport("gdi32.dll")]
+        static extern IntPtr CreateCompatibleBitmap(IntPtr hdc, int width, int nHeight);
+
+        [DllImport("gdi32.dll")]
+        static extern IntPtr CreateCompatibleDC(IntPtr hdc);
+
+        [DllImport("gdi32.dll")]
+        static extern IntPtr DeleteDC(IntPtr hdc);
+
+        [DllImport("gdi32.dll")]
+        static extern IntPtr DeleteObject(IntPtr hObject);
+
+        [DllImport("user32.dll")]
+        static extern IntPtr GetDesktopWindow();
+
+        [DllImport("user32.dll")]
+        static extern IntPtr GetWindowDC(IntPtr hWnd);
+
+        
+        [DllImport("gdi32.dll")]
+        static extern IntPtr SelectObject(IntPtr hdc, IntPtr hObject);
+
+        
+
+        const int CAPTUREBLT = 0x40000000;
         #endregion
 
 
