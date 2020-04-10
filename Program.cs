@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
-using McFishing;
+using Fisher;
 
-namespace McFishing
+namespace McFisher
 {
     internal static class Program
     {

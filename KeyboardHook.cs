@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace McFishing
+namespace McFisher
 {
     internal class GlobalKeyboardHookEventArgs : HandledEventArgs
     {
