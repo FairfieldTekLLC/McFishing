@@ -335,7 +335,7 @@ namespace Fisher
             captureRectangle.Width = width;
             captureRectangle.Height = height;
 
-            DrawRectangle(captureRectangle.X, captureRectangle.Y, captureRectangle.Width, captureRectangle.Height);
+           DrawRectangle(captureRectangle.X, captureRectangle.Y, captureRectangle.Width, captureRectangle.Height);
 
             if (!GetRunning())
                 new Thread(() => { CheckImage(captureRectangle); }).Start();
@@ -389,13 +389,7 @@ namespace Fisher
 
 #pragma warning disable 649
 
-        // ReSharper disable once InconsistentNaming
-        internal struct INPUT
-        {
-            public uint Type;
-            public MOUSEKEYBDHARDWAREINPUT Data;
-        }
-
+     
         [StructLayout(LayoutKind.Explicit)]
 
         // ReSharper disable once IdentifierTypo
