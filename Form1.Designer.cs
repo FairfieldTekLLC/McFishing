@@ -172,6 +172,7 @@
             this.Controls.Add(this.splitContainer3);
             this.Name = "Form1";
             this.Text = "McFishing";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.splitContainer3.Panel1.ResumeLayout(false);
             this.splitContainer3.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();

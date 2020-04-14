@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
@@ -16,6 +17,19 @@ namespace Fisher
 {
     public partial class Form1 : Form
     {
+
+        private void FetchReadMe()
+        {
+            try
+            {
+                WebClient client = new WebClient();
+                var data = client.DownloadString("https://raw.githubusercontent.com/FairfieldTekLLC/McFishing/master/README.md");
+            }
+            catch (Exception e)
+            {
+            }
+        }
+
         /// <summary>
         ///     Used to hook the keyboard
         /// </summary>
@@ -446,6 +460,11 @@ namespace Fisher
         private void label3_Click(object sender, EventArgs e)
         {
             Process.Start("https://github.com/FairfieldTekLLC/McFishing");
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            FetchReadMe();
         }
     }
 }
