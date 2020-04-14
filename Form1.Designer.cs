@@ -28,124 +28,180 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.txtConsole = new System.Windows.Forms.TextBox();
-            this.pbPreview = new System.Windows.Forms.PictureBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.txtAdjustX = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.txtAdjustY = new System.Windows.Forms.TextBox();
             this.lblStatus = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.pbPreview = new System.Windows.Forms.PictureBox();
+            this.label3 = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
+            this.splitContainer3.Panel1.SuspendLayout();
+            this.splitContainer3.Panel2.SuspendLayout();
+            this.splitContainer3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).BeginInit();
             this.SuspendLayout();
             // 
+            // splitContainer3
+            // 
+            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer3.Name = "splitContainer3";
+            this.splitContainer3.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer3.Panel1
+            // 
+            this.splitContainer3.Panel1.Controls.Add(this.splitContainer1);
+            // 
+            // splitContainer3.Panel2
+            // 
+            this.splitContainer3.Panel2.Controls.Add(this.label3);
+            this.splitContainer3.Size = new System.Drawing.Size(302, 140);
+            this.splitContainer3.SplitterDistance = 111;
+            this.splitContainer3.TabIndex = 12;
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.splitContainer2);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.pbPreview);
+            this.splitContainer1.Size = new System.Drawing.Size(302, 111);
+            this.splitContainer1.SplitterDistance = 121;
+            this.splitContainer1.TabIndex = 12;
+            // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Name = "splitContainer2";
+            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.txtConsole);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.lblStatus);
+            this.splitContainer2.Panel2.Controls.Add(this.label2);
+            this.splitContainer2.Panel2.Controls.Add(this.label1);
+            this.splitContainer2.Size = new System.Drawing.Size(121, 111);
+            this.splitContainer2.SplitterDistance = 51;
+            this.splitContainer2.TabIndex = 0;
+            // 
             // txtConsole
             // 
-            this.txtConsole.Location = new System.Drawing.Point(12, 12);
+            this.txtConsole.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtConsole.Location = new System.Drawing.Point(0, 0);
             this.txtConsole.Multiline = true;
             this.txtConsole.Name = "txtConsole";
-            this.txtConsole.Size = new System.Drawing.Size(175, 83);
-            this.txtConsole.TabIndex = 2;
+            this.txtConsole.Size = new System.Drawing.Size(121, 51);
+            this.txtConsole.TabIndex = 3;
             // 
-            // pbPreview
+            // lblStatus
             // 
-            this.pbPreview.Location = new System.Drawing.Point(193, 12);
-            this.pbPreview.Name = "pbPreview";
-            this.pbPreview.Size = new System.Drawing.Size(204, 177);
-            this.pbPreview.TabIndex = 3;
-            this.pbPreview.TabStop = false;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(16, 150);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(103, 13);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Press Ctrl F2 to Start";
+            this.lblStatus.Location = new System.Drawing.Point(3, 33);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(103, 13);
+            this.lblStatus.TabIndex = 13;
+            this.lblStatus.Text = "Status: Not Started";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(16, 163);
+            this.label2.Location = new System.Drawing.Point(3, 20);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(107, 13);
-            this.label2.TabIndex = 5;
+            this.label2.TabIndex = 12;
             this.label2.Text = "Press Ctrl F3 To Stop";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(3, 7);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(103, 13);
+            this.label1.TabIndex = 11;
+            this.label1.Text = "Press Ctrl F2 to Start";
+            // 
+            // pbPreview
+            // 
+            this.pbPreview.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbPreview.Location = new System.Drawing.Point(0, 0);
+            this.pbPreview.Name = "pbPreview";
+            this.pbPreview.Size = new System.Drawing.Size(177, 111);
+            this.pbPreview.TabIndex = 4;
+            this.pbPreview.TabStop = false;
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(16, 104);
+            this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.SystemColors.Highlight;
+            this.label3.Location = new System.Drawing.Point(0, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(46, 13);
-            this.label3.TabIndex = 6;
-            this.label3.Text = "Adjust X";
-            // 
-            // txtAdjustX
-            // 
-            this.txtAdjustX.Location = new System.Drawing.Point(68, 101);
-            this.txtAdjustX.Name = "txtAdjustX";
-            this.txtAdjustX.Size = new System.Drawing.Size(100, 20);
-            this.txtAdjustX.TabIndex = 7;
-            this.txtAdjustX.Text = "0";
-            // 
-            // label4
-            // 
-            this.label4.Location = new System.Drawing.Point(16, 130);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(46, 13);
-            this.label4.TabIndex = 8;
-            this.label4.Text = "Adjust Y";
-            // 
-            // txtAdjustY
-            // 
-            this.txtAdjustY.Location = new System.Drawing.Point(68, 127);
-            this.txtAdjustY.Name = "txtAdjustY";
-            this.txtAdjustY.Size = new System.Drawing.Size(100, 20);
-            this.txtAdjustY.TabIndex = 9;
-            this.txtAdjustY.Text = "0";
-            // 
-            // lblStatus
-            // 
-            this.lblStatus.Location = new System.Drawing.Point(16, 176);
-            this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(123, 13);
-            this.lblStatus.TabIndex = 10;
-            this.lblStatus.Text = "Status: Not Started";
+            this.label3.Size = new System.Drawing.Size(302, 25);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "Powered By ChapleKeep";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(405, 197);
-            this.Controls.Add(this.lblStatus);
-            this.Controls.Add(this.txtAdjustY);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.txtAdjustX);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.pbPreview);
-            this.Controls.Add(this.txtConsole);
+            this.ClientSize = new System.Drawing.Size(302, 140);
+            this.Controls.Add(this.splitContainer3);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "McFishing";
+            this.splitContainer3.Panel1.ResumeLayout(false);
+            this.splitContainer3.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
+            this.splitContainer3.ResumeLayout(false);
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel1.PerformLayout();
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            this.splitContainer2.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
+
+        private System.Windows.Forms.SplitContainer splitContainer3;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.TextBox txtConsole;
-        private System.Windows.Forms.PictureBox pbPreview;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox txtAdjustX;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox txtAdjustY;
         private System.Windows.Forms.Label lblStatus;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.PictureBox pbPreview;
+        private System.Windows.Forms.Label label3;
     }
 }
 

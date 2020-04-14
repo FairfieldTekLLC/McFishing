@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
@@ -93,7 +94,7 @@ namespace Fisher
                     }
             }
         }
-    
+
 
 
         public Bitmap CaptureRegion(Rectangle region)
@@ -131,7 +132,7 @@ namespace Fisher
         private Bitmap GetBitMap(Rectangle captureRectangle)
         {
             Bitmap captureBitmap = new Bitmap(captureRectangle.Width, captureRectangle.Height, PixelFormat.Format32bppArgb);
-            Graphics captureGraphics=null;
+            Graphics captureGraphics = null;
             try
             {
                 //Get a graphics adapter
@@ -177,20 +178,20 @@ namespace Fisher
 
                 //For each pixel in the image
                 for (int j = 0; j < captureRectangle.Height; j++)
-                for (int i = 0; i < captureRectangle.Width; i++)
-                {
-                    //Get the pixel
-                    Color color = captureBitmap.GetPixel(j, i);
-                    //Is it red like the bobber?
-                    if (color.R > 120 && color.B < 30 && color.G < 30)
+                    for (int i = 0; i < captureRectangle.Width; i++)
                     {
-                        foundBobber = true;
-                        break;
-                    }
+                        //Get the pixel
+                        Color color = captureBitmap.GetPixel(j, i);
+                        //Is it red like the bobber?
+                        if (color.R > 120 && color.B < 30 && color.G < 30)
+                        {
+                            foundBobber = true;
+                            break;
+                        }
 
-                    if (foundBobber)
-                        break;
-                }
+                        if (foundBobber)
+                            break;
+                    }
 
                 //Grab the old preview image.
                 Image old = pbPreview.Image;
@@ -199,8 +200,8 @@ namespace Fisher
                 //Dispose of the old preview image
                 old?.Dispose();
                 //Create a new preview image from the screen grab
-                pbPreview.Image = (Bitmap) captureBitmap.Clone();
-
+                pbPreview.Image = (Bitmap)captureBitmap.Clone();
+                pbPreview.SizeMode = PictureBoxSizeMode.StretchImage;
                 if (foundBobber)
                 {
                     LogConsole("Found Bobber!");
@@ -322,20 +323,12 @@ namespace Fisher
             Point cursor = new Point();
             GetCursorPos(ref cursor);
             Rectangle captureRectangle = new Rectangle();
-            if (int.TryParse(txtAdjustX.Text, out int xAdjust))
-                captureRectangle.X = xAdjust + cursor.X - width / 2;
-            else
-                captureRectangle.X = cursor.X - width / 2;
-
-            if (int.TryParse(txtAdjustY.Text, out int yAdjust))
-                captureRectangle.Y = yAdjust + cursor.Y - height / 2;
-            else
-                captureRectangle.Y = cursor.Y - height / 2;
-
+            captureRectangle.X = cursor.X - width / 2;
+            captureRectangle.Y = cursor.Y - height / 2;
             captureRectangle.Width = width;
             captureRectangle.Height = height;
 
-           DrawRectangle(captureRectangle.X, captureRectangle.Y, captureRectangle.Width, captureRectangle.Height);
+            DrawRectangle(captureRectangle.X, captureRectangle.Y, captureRectangle.Width, captureRectangle.Height);
 
             if (!GetRunning())
                 new Thread(() => { CheckImage(captureRectangle); }).Start();
@@ -389,7 +382,7 @@ namespace Fisher
 
 #pragma warning disable 649
 
-     
+
         [StructLayout(LayoutKind.Explicit)]
 
         // ReSharper disable once IdentifierTypo
@@ -435,15 +428,24 @@ namespace Fisher
         [DllImport("user32.dll")]
         static extern IntPtr GetWindowDC(IntPtr hWnd);
 
-        
+
         [DllImport("gdi32.dll")]
         static extern IntPtr SelectObject(IntPtr hdc, IntPtr hObject);
 
-        
+
 
         const int CAPTUREBLT = 0x40000000;
+
         #endregion
 
+        private void splitContainer2_SplitterMoved(object sender, SplitterEventArgs e)
+        {
 
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://github.com/FairfieldTekLLC/McFishing");
+        }
     }
 }
