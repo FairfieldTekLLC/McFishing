@@ -70,7 +70,7 @@ namespace Fisher
             //Hook to keypress
             _globalKeyboardHook.KeyboardPressed += _globalKeyboardHook_KeyboardPressed;
             //Setup timer for checking screen
-            _pixelCheck = new Timer { Interval = (int)TimeSpan.FromMilliseconds(100).TotalMilliseconds };
+            _pixelCheck = new Timer { Interval = (int)TimeSpan.FromMilliseconds(10).TotalMilliseconds };
             //Setup timer on tick event
             _pixelCheck.Tick += PixelCheckTick;
         }
@@ -241,9 +241,9 @@ namespace Fisher
             try
             {
                 MouseEvent(MouseEventFlags.RightDown);
-                Thread.Sleep(100);
+                Thread.Sleep(10);
                 MouseEvent(MouseEventFlags.RightUp);
-                Thread.Sleep(5000);
+                Thread.Sleep(10);
 
             }
             catch (Exception e)
