@@ -241,9 +241,9 @@ namespace Fisher
             try
             {
                 MouseEvent(MouseEventFlags.RightDown);
-                Thread.Sleep(100);
+                Thread.Sleep(50);
                 MouseEvent(MouseEventFlags.RightUp);
-                Thread.Sleep(5000);
+                Thread.Sleep(50);
 
             }
             catch (Exception e)
