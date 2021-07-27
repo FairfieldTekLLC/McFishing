@@ -1,10 +1,7 @@
-<<1.0.4>>
+# MCFisher
+This is a fork from https://github.com/FairfieldTekLLC/McFishing
 
-# McFishing
-Fishing Bot for Minecraft.  This program uses a global keyboard hook and image recognition to manage fishing inside of Minecraft.
-When the program starts you need to make sure your mouse is in the middle of the minecraft window.  Then start the app, press ctrl - F2 to start the monitoring and it will show you a picture of where it is looking to detect the bobber for fishing.
-If the bobber disappears, then it knows it needs to reel in the fishing rod.
-
+The bot was slightly optimized a bit and the user now has the ability to pick the region size to scan.
 
 Copyright 2020 Fairfield Tek L.L.C.
 
