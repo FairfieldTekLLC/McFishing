@@ -227,7 +227,7 @@ namespace Fisher
                 {
                     LogConsole("Found Bobber!");
                     timesFound += 1;
-                    LogConsole(timesFound.ToString());
+                    // LogConsole(timesFound.ToString());
                     
                 }
                 else
@@ -253,9 +253,9 @@ namespace Fisher
             try
             {
                 MouseEvent(MouseEventFlags.RightDown);
-                Thread.Sleep(50);
+                Thread.Sleep(100);
                 MouseEvent(MouseEventFlags.RightUp);
-                Thread.Sleep(50);
+                Thread.Sleep(100);
 
             }
             catch (Exception e)
@@ -379,8 +379,8 @@ namespace Fisher
 
         public void PixelCheckTick(object sender, EventArgs e)
         {
-            int height = Int32.Parse(textBox_y.Text);
-            int width = Int32.Parse(textBox_x.Text);
+            int height = Convert.ToInt32(Math.Round(numericUpDown_y.Value, 0));
+            int width = Convert.ToInt32(Math.Round(numericUpDown_x.Value, 0));
             Point cursor = new Point();
             GetCursorPos(ref cursor);
             Rectangle captureRectangle = new Rectangle();
@@ -520,6 +520,11 @@ namespace Fisher
         }
 
         private void region_y_text_box_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox_x_TextChanged(object sender, EventArgs e)
         {
 
         }
